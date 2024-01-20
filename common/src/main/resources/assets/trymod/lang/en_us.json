@@ -1,5 +1,6 @@
 {
   "item.trymod.orangejuice_cup": "Orange Juice",
   "item.trymod.orangejuice_cup_empty": "Spilled Cup",
+  "item.trymod.orangejuice_fluid_bucket": "Orange Juice Bucket",
   "itemGroup.try": "try"
 }

@@ -15,6 +15,9 @@
   "icon": "assets/trymod/icon.png",
   "environment": "*",
   "entrypoints": {
+    "fabric-datagen": [
+      "net.trymod.fabric.datagen.TryDataGenerator"
+    ],
     "main": [
       "net.trymod.fabric.TryModFabric"
     ]

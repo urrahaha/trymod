@@ -1,6 +1,7 @@
 package net.trymod.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -9,16 +10,18 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.trymod.fluid.OrangeJuiceFluid;
 import org.jetbrains.annotations.NotNull;
 
-import static net.trymod.registry.TryRegistry.ORANGEJUICE_CUP;
-import static net.trymod.registry.TryRegistry.TRY_TAB;
+import static net.trymod.registry.TryRegistry.*;
 
-public class OrangeJuiceCup extends Item {
+public class OrangeJuiceCupItem extends Item {
     private static final int DRINK_DURATION = 32;
     private final boolean empty;
 
-    public OrangeJuiceCup(boolean empty) {
+    public OrangeJuiceCupItem(boolean empty) {
         super(new Item.Properties()
                 .arch$tab(TRY_TAB)
                 .fireResistant()
@@ -35,14 +38,22 @@ public class OrangeJuiceCup extends Item {
 
         if (livingEntity instanceof Player && !((Player)livingEntity).getAbilities().instabuild) {
             itemStack.shrink(1);
-            if (!itemStack.isEmpty()) ((Player) livingEntity).getInventory().add(new ItemStack(ORANGEJUICE_CUP));
+            if (!itemStack.isEmpty()) ((Player) livingEntity).getInventory().add(new ItemStack(ORANGEJUICE_CUP_EMPTY));
+
+            BlockPos blockPos = BlockPos.containing(livingEntity.position());
+            BlockState blockState = level.getBlockState(blockPos);
+            Fluid fluid = OrangeJuiceFluid.FLUID.sourceRegistry.get();
+
+            if (blockState.canBeReplaced(fluid)) {
+                level.setBlock(BlockPos.containing(livingEntity.position()), fluid.defaultFluidState().createLegacyBlock(), 11);
+            }
         }
 
         if (!level.isClientSide) {
             livingEntity.removeAllEffects();
         }
 
-        return itemStack.isEmpty() ? new ItemStack(Items.BUCKET) : itemStack;
+        return itemStack.isEmpty() ? new ItemStack(ORANGEJUICE_CUP_EMPTY) : itemStack;
     }
 
     public int getUseDuration(ItemStack itemStack) {
