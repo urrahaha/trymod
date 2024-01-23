@@ -2,14 +2,14 @@
   "schemaVersion": 1,
   "id": "trymod",
   "version": "${version}",
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "try mod",
+  "description": "try",
   "authors": [
-    "Me!"
+    "urrahaha"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "issues": "https://github.com/urrahaha/trymod/issues",
+    "sources": "https://github.com/urrahaha/trymod"
   },
   "license": "Insert License Here",
   "icon": "assets/trymod/icon.png",
