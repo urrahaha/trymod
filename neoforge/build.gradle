@@ -19,6 +19,12 @@ configurations {
     developmentNeoForge.extendsFrom common
 }
 
+repositories {
+    maven {
+        url "https://maven.blamejared.com"
+    }
+}
+
 dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
     // Remove the next line if you don't want to depend on the API
@@ -26,6 +32,9 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
+
+    modImplementation ("org.embeddedt:embeddium-1.20.4:0.2.19-git.f01065e+mc1.20.4")
+    modImplementation fileTree(dir: "lib", include: ["*.jar"])
 }
 
 processResources {
