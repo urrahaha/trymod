@@ -1,5 +1,6 @@
 package net.trymod.item;
 
+import dev.architectury.hooks.item.ItemStackHooks;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -8,14 +9,18 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.trymod.fluid.OrangeJuiceFluid;
 import org.jetbrains.annotations.NotNull;
 
-import static net.trymod.registry.TryRegistry.*;
+import static net.trymod.registry.TryRegistry.ORANGEJUICE_CUP_EMPTY;
+import static net.trymod.registry.TryRegistry.TRY_TAB;
 
 public class OrangeJuiceCupItem extends Item {
     private static final int DRINK_DURATION = 32;
@@ -38,7 +43,9 @@ public class OrangeJuiceCupItem extends Item {
 
         if (livingEntity instanceof Player && !((Player)livingEntity).getAbilities().instabuild) {
             itemStack.shrink(1);
-            if (!itemStack.isEmpty()) ((Player) livingEntity).getInventory().add(new ItemStack(ORANGEJUICE_CUP_EMPTY));
+            if (!itemStack.isEmpty() && livingEntity instanceof ServerPlayer) {
+                ItemStackHooks.giveItem((ServerPlayer) livingEntity, new ItemStack(ORANGEJUICE_CUP_EMPTY));
+            }
 
             BlockPos blockPos = BlockPos.containing(livingEntity.position());
             BlockState blockState = level.getBlockState(blockPos);
