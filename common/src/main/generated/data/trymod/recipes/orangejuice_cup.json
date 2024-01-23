@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "orangejuice_cup",
+  "ingredients": [
+    {
+      "item": "trymod:orangejuice_fluid_bucket"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "item": "trymod:orangejuice_cup"
+  }
+}
