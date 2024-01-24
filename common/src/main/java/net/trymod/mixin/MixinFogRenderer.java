@@ -43,24 +43,25 @@ public class MixinFogRenderer {
     ) {
         BlockPos blockPos = camera.getBlockPosition();
         FluidState fluidState = clientLevel.getFluidState(blockPos);
-        boolean isBelowFluid = camera.getPosition().y < (blockPos.getY() + fluidState.getHeight(clientLevel, blockPos));
-        if (!isBelowFluid) ci.cancel();
-        FlowingFluid orangeSource = OrangeJuiceFluid.FLUID.sourceRegistry.get();
-        FlowingFluid orangeFlowing = OrangeJuiceFluid.FLUID.flowingRegistry.get();
-        if (fluidState.is(orangeSource) || fluidState.is(orangeFlowing)) {
-            int orangeJuiceColor = OrangeJuiceFluid.getColor();
-            if (Platform.isModLoaded("sodium")) {
-                // turn back ABGR into ARGB
-                fogRed = (orangeJuiceColor & 0xFF) / 255.0F;
-                fogGreen = (orangeJuiceColor >> 8 & 0xFF) / 255.0F;
-                fogBlue = (orangeJuiceColor >> 16 & 0xFF) / 255.0F;
+        boolean isInFluid = camera.getPosition().y < (blockPos.getY() + fluidState.getHeight(clientLevel, blockPos));
+        if (isInFluid) {
+            FlowingFluid orangeSource = OrangeJuiceFluid.FLUID.sourceRegistry.get();
+            FlowingFluid orangeFlowing = OrangeJuiceFluid.FLUID.flowingRegistry.get();
+            if (fluidState.is(orangeSource) || fluidState.is(orangeFlowing)) {
+                int orangeJuiceColor = OrangeJuiceFluid.getColor();
+                if (Platform.isModLoaded("sodium")) {
+                    // turn back ABGR into ARGB
+                    fogRed = (orangeJuiceColor & 0xFF) / 255.0F;
+                    fogGreen = (orangeJuiceColor >> 8 & 0xFF) / 255.0F;
+                    fogBlue = (orangeJuiceColor >> 16 & 0xFF) / 255.0F;
+                }
+                else {
+                    fogRed = (orangeJuiceColor >> 16 & 0xFF) / 255.0F;
+                    fogGreen = (orangeJuiceColor >> 8 & 0xFF) / 255.0F;
+                    fogBlue = (orangeJuiceColor & 0xFF) / 255.0F;
+                }
+                ci.cancel();
             }
-            else {
-                fogRed = (orangeJuiceColor >> 16 & 0xFF) / 255.0F;
-                fogGreen = (orangeJuiceColor >> 8 & 0xFF) / 255.0F;
-                fogBlue = (orangeJuiceColor & 0xFF) / 255.0F;
-            }
-            ci.cancel();
         }
     }
 }
